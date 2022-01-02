@@ -1,12 +1,12 @@
 class LinkedList:
     def __init__(self, value):
         self.head = Node(value)
-        self.last = self.head
+        self.tail = self.head
 
     def add(self, value):
-        self.last.next = Node(value)
-        self.last.next.prev = self.last
-        self.last = self.last.next
+        self.tail.next = Node(value)
+        self.tail.next.prev = self.tail
+        self.tail = self.tail.next
         return self
 
     def __str__(self):
@@ -18,7 +18,7 @@ class LinkedList:
         return ' -> '.join(values)
 
     def remove_duplicates(self):
-        current = self.last
+        current = self.tail
         while current is not self.head:
             runner = self.head
             while runner is not None and runner is not current:
@@ -31,8 +31,8 @@ class LinkedList:
     def remove(self, node):
         if node.prev:
             node.prev.next = node.next
-            if node is self.last:
-                self.last = node.prev
+            if node is self.tail:
+                self.tail = node.prev
         if node.next:
             node.next.prev = node.prev
             if node is self.head:
