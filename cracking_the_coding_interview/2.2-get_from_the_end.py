@@ -1,4 +1,4 @@
-# A -> B -> C -> D; offset=2
+# A -> B -> C -> D; offset=1
 # _get_from_the_end_recursive(A, 1, 0)
 #   _get_from_the_end_recursive(B, 1, 0)
 #       _get_from_the_end_recursive(C, 1, 0)
