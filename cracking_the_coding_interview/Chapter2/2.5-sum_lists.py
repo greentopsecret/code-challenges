@@ -1,34 +1,4 @@
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-
-    def __str__(self):
-        return '%s (next=%s)' % (str(self.value),
-                                 str(self.next.value) if self.next else None)
-
-
-class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
-
-    def add(self, node: Node):
-        if self.head is None or self.tail is None:
-            self.head = node
-            self.tail = self.head
-        else:
-            self.tail.next = node
-            self.tail = self.tail.next
-        return self
-
-    def __str__(self):
-        current = self.head
-        values = []
-        while current:
-            values.append(str(current.value))
-            current = current.next
-        return ' -> '.join(values)
+from LinkedList import LinkedList, Node
 
 
 def sum_lists(a, b):
@@ -36,8 +6,6 @@ def sum_lists(a, b):
     head = None
     tail = None
     while True:
-        d = 0
-
         if a and b:
             d = a.value + b.value
         elif a:
@@ -61,95 +29,62 @@ def sum_lists(a, b):
     return head
 
 
-def sum_reverse_lists(a, b) -> Node:
-    _, _, node, _ = _sum_reverse_lists_recursive(a, b, 0, 0)
-
-    return node
-
-
-def _sum_reverse_lists_recursive(input_a, input_b, idx_a, idx_b) -> tuple[int, int, Node, int]:
-    if input_a.next is None and input_b.next is None:
-        s = input_a.value + input_b.value
-        return 0, 0, Node(s % 10), 1 if s > 9 else 0
-
-    if input_a.next is None and input_b.next is not None:
-        i_a = input_a
-        i_b = input_b.next
-        idx_b += 1
-    elif input_a.next is not None and input_b.next is None:
-        i_a = input_a.next
-        i_b = input_b
-        idx_a += 1
+def sum_reverse_lists(ll1: Node, ll2: Node) -> Node:
+    # Pad short list with zeros
+    len_a = len(ll1)
+    len_b = len(ll2)
+    if len(ll1) < len(ll2):
+        short = ll1
+        long = ll2
+        r = len_b - len_a
     else:
-        i_a = input_a.next
-        i_b = input_b.next
-        idx_a += 1
-        idx_b += 1
+        long = ll1
+        short = ll2
+        r = len_a - len_b
+    for _ in range(r):
+        short = Node(0, next_node=short)
 
-    idx_a, idx_b, sum_node, carry = _sum_reverse_lists_recursive(
-        i_a,
-        i_b,
-        idx_a,
-        idx_b
-    )
+    # calculate sum recursively
+    ll, carry = _sum_reverse_lists_recursive(short, long)
+    if carry:
+        ll = Node(carry, next_node=ll)
 
-    if idx_a == idx_b:
-        s = input_a.value + input_b.value + carry
-        n = Node(s % 10)
-        n.next = sum_node
-        return idx_a, idx_b, n, 1 if s > 9 else 0
-    else:
-        return idx_a, idx_b, sum_node, carry
+    return ll
+
+
+def _sum_reverse_lists_recursive(ll1: Node, ll2: Node) -> tuple[Node, int]:
+    if ll1.next is None and ll2.next is None:
+        value = ll1.value + ll2.value
+        return Node(value % 10), 1 if value > 9 else 0
+
+    node, carry = _sum_reverse_lists_recursive(ll1.next, ll2.next)
+    value = ll1.value + ll2.value + carry
+    return Node(value % 10, next_node=node), 1 if value > 9 else 0
 
 
 if __name__ == '__main__':
-    # list617 = LinkedList() \
-    #     .add(7) \
-    #     .add(1) \
-    #     .add(6)
+    # head617 = Node(7)
+    # head617.next = Node(1)
+    # head617.next.next = Node(6)
+    #
+    # head295 = Node(5)
+    # head295.next = Node(9)
+    # head295.next.next = Node(2)
+    #
+    # result = sum_lists(head617, head295)
+    #
+    # head912 = Node(2)
+    # head912.next = Node(1)
+    # head912.next.next = Node(9)
+    #
+    # assert str(LinkedList().add(result)) == str(LinkedList().add(head912))
 
-    head617 = Node(7)
-    head617.next = Node(1)
-    head617.next.next = Node(6)
+    linked_list_1 = LinkedList([1, 2, 4, 6])
+    linked_list_2 = LinkedList([5, 6])
 
-    # list295 = LinkedList() \
-    #     .add(5) \
-    #     .add(9) \
-    #     .add(2)
+    assert sum_reverse_lists(linked_list_1.head, linked_list_2.head).print_list() == '1 -> 3 -> 0 -> 2'
 
-    head295 = Node(5)
-    head295.next = Node(9)
-    head295.next.next = Node(2)
+    linked_list_1 = LinkedList([1, 2, 4, 6])
+    linked_list_2 = LinkedList([9, 9, 9, 9])
 
-    result = sum_lists(head617, head295)
-
-    head912 = Node(2)
-    head912.next = Node(1)
-    head912.next.next = Node(9)
-
-    # ll = LinkedList()
-    # ll.add(result)
-    # print(str(ll))
-
-    assert str(LinkedList().add(result)) == str(LinkedList().add(head912))
-
-    head1246 = Node(1)
-    head1246.next = Node(2)
-    head1246.next.next = Node(4)
-    head1246.next.next.next = Node(6)
-
-    head56 = Node(5)
-    head56.next = Node(6)
-
-    result = sum_reverse_lists(head1246, head56)
-
-    head1302 = Node(1)
-    head1302.next = Node(3)
-    head1302.next.next = Node(0)
-    head1302.next.next.next = Node(2)
-
-    # ll = LinkedList()
-    # ll.add(result)
-    # print(str(ll))
-
-    assert str(LinkedList().add(result)) == str(LinkedList().add(head1302))
+    assert sum_reverse_lists(linked_list_1.head, linked_list_2.head).print_list() == '1 -> 1 -> 2 -> 4 -> 5'
