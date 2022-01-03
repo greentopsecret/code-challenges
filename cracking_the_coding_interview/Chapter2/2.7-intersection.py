@@ -3,41 +3,44 @@ class Node:
         self.value = value
         self.next = next_node
 
-    def __len__(self):
-        if self.next is None:
-            return 1
+    # def __len__(self):
+    #     if self.next is None:
+    #         return 1
+    #
+    #     # iterative approach is more optimal in terms of space, but recursive one is less trivial
+    #     return len(self.next) + 1
 
-        # iterative approach is more optimal in terms of space, but recursive one is less trivial
-        return len(self.next) + 1
+    def get_length_and_tail(self):
+        cnt = 0
+        node = self
+        while node:
+            cnt += 1
+            node = node.next
+        return cnt, node
 
 
 def find_intersection(head1, head2) -> Node:
+    len1, tail1 = head1.get_length_and_tail()
+    len2, tail2 = head2.get_length_and_tail()
 
-    # the last node of intersecting lists are the same
-    # it means that we can say if two lists are intersecting at the moment when we count lengths
-    # but in sake of readability I will leave it as it is (count length in Node.__len__ method)
-    len1 = len(head1)
-    len2 = len(head2)
+    if tail1 != tail2:
+        return False
 
     if len1 > len2:
         short = head2
         long = head1
-        diff = len1 - len2
     else:
         short = head1
         long = head2
-        diff = len2 - len1
 
-    for _ in range(diff):
+    for _ in range(abs(len2 - len1)):
         long = long.next
 
-    while long and short:
-        if long == short:
-            return long
+    while long != short:
         long = long.next
         short = short.next
 
-    return False
+    return long
 
 
 if __name__ == '__main__':
