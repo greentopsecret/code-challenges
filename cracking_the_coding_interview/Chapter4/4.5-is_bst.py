@@ -43,16 +43,16 @@ def _is_bst_a(node: TreeNode):
     return True, min(left_min_value, right_min_value, node.value), max(left_max_value, right_max_value, node.value)
 
 
-def is_bst_b(node: TreeNode):
-    result, _ = _is_bst_b(node, None)
+def is_bst_c(node: TreeNode):
+    result, _ = _is_bst_c(node, None)
     return result
 
 
-def _is_bst_b(node: TreeNode, prev: TreeNode = None):
+def _is_bst_c(node: TreeNode, prev: TreeNode = None):
     if node is None:
         return True, prev
 
-    result, prev = _is_bst_b(node.left, prev)
+    result, prev = _is_bst_c(node.left, prev)
     if not result:
         return result, prev
 
@@ -63,7 +63,7 @@ def _is_bst_b(node: TreeNode, prev: TreeNode = None):
         if node.right.value <= node.value:
             return False, node
 
-    result, prev = _is_bst_b(node.right, node)
+    result, prev = _is_bst_c(node.right, node)
     return result, prev
 
 
@@ -71,27 +71,27 @@ if __name__ == '__main__':
     def main():
         root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert is_bst_a(root)
-        assert is_bst_b(root)
+        assert is_bst_c(root)
 
         root = build_bst([2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert not is_bst_a(root)
-        assert not is_bst_b(root)
+        assert not is_bst_c(root)
 
         root = build_bst([1, 2, 3, 4, 5, 6, 7])
         assert is_bst_a(root)
-        assert is_bst_b(root)
+        assert is_bst_c(root)
 
         root = build_bst([1, 2, 3, 4, 6, 6, 7])
         assert is_bst_a(root)
-        assert is_bst_b(root)
+        assert is_bst_c(root)
 
         root = build_bst([1, 2, 3, 4, 5, 6, 6])
         assert not is_bst_a(root)
-        assert not is_bst_b(root)
+        assert not is_bst_c(root)
 
         root = build_bst([1, 2, 5, 4, 5, 6, 7])
         assert not is_bst_a(root)
-        assert not is_bst_b(root)
+        assert not is_bst_c(root)
 
         print('All tests are passed')
 
