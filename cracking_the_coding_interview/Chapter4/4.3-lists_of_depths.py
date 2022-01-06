@@ -40,21 +40,21 @@ def list_of_depths_bfs(root):
     result = []
     while not queue.empty():
         cnt = queue.qsize()
-        t_node = queue.get()
-        ll_node = LinkedListNode(t_node.value)
-        result.append(ll_node)
-        if t_node.left:
-            queue.put(t_node.left)
-        if t_node.right:
-            queue.put(t_node.right)
-        for _ in range(1, cnt):
+        ll_node = None
+        for i in range(0, cnt):
             t_node = queue.get()
-            ll_node.next = LinkedListNode(t_node.value)
-            ll_node = ll_node.next
-            if t_node.left:
-                queue.put(t_node.left)
-            if t_node.right:
-                queue.put(t_node.right)
+            if t_node is None:
+                continue
+
+            if isinstance(ll_node, LinkedListNode):
+                ll_node.next = LinkedListNode(t_node.value)
+                ll_node = ll_node.next
+            else:
+                ll_node = LinkedListNode(t_node.value)
+                result.append(ll_node)
+
+            queue.put(t_node.left)
+            queue.put(t_node.right)
 
     return result
 
