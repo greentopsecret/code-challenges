@@ -44,26 +44,27 @@ def _is_bst_a(node: TreeNode):
 
 
 def is_bst_b(node: TreeNode):
-    result, _ = _is_bst_b(node)
+    result, _ = _is_bst_b(node, None)
     return result
 
 
-def _is_bst_b(node: TreeNode):
+def _is_bst_b(node: TreeNode, prev: TreeNode = None):
     if node is None:
-        return True, None
+        return True, prev
 
-    result, prev_value = _is_bst_b(node.left)
-    if not result or (prev_value and prev_value > node.value):
-        return False, None
+    result, prev = _is_bst_b(node.left, prev)
+    if not result:
+        return result, prev
+
+    if prev and prev.value > node.value:
+        return False, node
 
     if node.right:
         if node.right.value <= node.value:
-            return False, None
+            return False, node
 
-        result, prev_value = _is_bst_b(node.right)
-        return result, prev_value
-    else:
-        return True, node.value
+    result, prev = _is_bst_b(node.right, node)
+    return result, prev
 
 
 if __name__ == '__main__':
