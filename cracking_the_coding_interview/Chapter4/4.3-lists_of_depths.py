@@ -59,6 +59,26 @@ def list_of_depths_bfs(root):
     return result
 
 
+def list_of_depths_dfs(node: TreeNode):
+    return _list_of_depths_dfs(node, [], 0)
+
+
+def _list_of_depths_dfs(t_node: TreeNode, lists: list, depth: int):
+    if t_node is None:
+        return lists
+
+    ll_node = LinkedListNode(t_node.value)
+    if depth in lists:
+        lists[depth].next = ll_node
+    else:
+        lists[depth] = ll_node
+
+    _list_of_depths_dfs(t_node.left, lists, depth+1)
+    _list_of_depths_dfs(t_node.right, lists, depth+1)
+
+    return lists
+
+
 if __name__ == '__main__':
     def main():
         root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
@@ -71,5 +91,6 @@ if __name__ == '__main__':
         assert len(lists[3]) == 6
 
         print('All tests are passed')
+
 
     main()
