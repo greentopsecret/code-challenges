@@ -43,25 +43,16 @@ def is_balanced(node: TreeNode) -> bool:
 
 
 def _is_balanced(node: TreeNode) -> int:
-    if node.left is None and node.right is None:
+    if node is None:
         return 1
 
-    left_depth = None
-    if node.left:
-        left_depth = _is_balanced(node.left)
-        if left_depth == -1:
-            return left_depth
+    left_depth = _is_balanced(node.left)
+    if left_depth == -1:
+        return left_depth
 
-    right_depth = None
-    if node.right:
-        right_depth = _is_balanced(node.right)
-        if right_depth == -1:
-            return right_depth
-
-    if left_depth is None:
-        left_depth = right_depth
-    if right_depth is None:
-        right_depth = left_depth
+    right_depth = _is_balanced(node.right)
+    if right_depth == -1:
+        return right_depth
 
     return max(left_depth, right_depth) + 1 if abs(left_depth - right_depth) <= 1 else -1
 
@@ -72,12 +63,8 @@ if __name__ == '__main__':
         assert is_balanced(root)
 
         root.left.left.right.left = TreeNode(14)
-        assert is_balanced(root)
-
-        root.left.left.right.left.left = TreeNode(15)
         assert not is_balanced(root)
 
         print('All tests are passed')
-
 
     main()
