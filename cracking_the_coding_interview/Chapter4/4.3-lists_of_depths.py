@@ -2,7 +2,7 @@ import math
 from queue import SimpleQueue
 
 
-class Node:
+class TreeNode:
     def __init__(self, value):
         self.value = value
         self.left = None
@@ -26,7 +26,7 @@ def build_bst(arr):
         return None
 
     mid = math.ceil(len(arr) / 2) - 1
-    root = Node(arr[mid])
+    root = TreeNode(arr[mid])
     root.left = build_bst(arr[0:mid])
     root.right = build_bst(arr[mid + 1:])
 
