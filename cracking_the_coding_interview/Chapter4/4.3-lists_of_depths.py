@@ -68,10 +68,11 @@ def _list_of_depths_dfs(t_node: TreeNode, lists: list, depth: int):
         return lists
 
     ll_node = LinkedListNode(t_node.value)
-    if depth in lists:
-        lists[depth].next = ll_node
-    else:
+    if depth < len(lists):
+        ll_node.next = lists[depth]
         lists[depth] = ll_node
+    else:
+        lists.append(ll_node)
 
     _list_of_depths_dfs(t_node.left, lists, depth+1)
     _list_of_depths_dfs(t_node.right, lists, depth+1)
@@ -84,6 +85,13 @@ if __name__ == '__main__':
         root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
 
         lists = list_of_depths_bfs(root)
+        assert len(lists) == 4
+        assert len(lists[0]) == 1
+        assert len(lists[1]) == 2
+        assert len(lists[2]) == 4
+        assert len(lists[3]) == 6
+
+        lists = list_of_depths_dfs(root)
         assert len(lists) == 4
         assert len(lists[0]) == 1
         assert len(lists[1]) == 2
