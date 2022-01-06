@@ -1,11 +1,14 @@
-from collections import defaultdict
-import math
-
 from collections import Counter
 import math
 
 
 def min_window_alt(s, t):  # easier to follow
+    """
+    solution from https://leetcode.com/discuss/interview-question/1045207/facebook-online-minimum-length-substrings
+    :param s:
+    :param t:
+    :return:
+    """
     res = math.inf
     l, r = 0, 0
     d = Counter(t)
@@ -80,21 +83,19 @@ def check(expected, output):
 
 
 if __name__ == "__main__":
-    # s1 = "dcbefebce"
-    # t1 = "fd"
-    # expected_1 = 5
-    # output_1 = min_length_substring(s1, t1)
-    # check(expected_1, output_1)
-    #
-    # s2 = "bfbeadbcbcbfeaaeefcddcccbbbfaaafdbebedddf"
-    # t2 = "cbccfafebccdccebdd"
-    # expected_2 = -1
-    # output_2 = min_length_substring(s2, t2)
-    # check(expected_2, output_2)
+    s1 = "dcbefebce"
+    t1 = "fd"
+    expected_1 = 5
+    output_1 = min_length_substring(s1, t1)
+    check(expected_1, output_1)
+
+    s2 = "bfbeadbcbcbfeaaeefcddcccbbbfaaafdbebedddf"
+    t2 = "cbccfafebccdccebdd"
+    expected_2 = -1
+    output_2 = min_length_substring(s2, t2)
+    check(expected_2, output_2)
 
     check(3, min_length_substring("dddcbefedce", "fd"))
     check(3, min_window_alt("dddcbefedce", "fd"))
-    # check(3, min_length_substring("dcbefedce", "fd"))
-    # check(7, min_length_substring("dcbefedce", "dfd"))
-
-    # Add your own test cases here
+    check(3, min_length_substring("dcbefedce", "fd"))
+    check(7, min_length_substring("dcbefedce", "dfd"))
