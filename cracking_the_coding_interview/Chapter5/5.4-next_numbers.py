@@ -36,7 +36,7 @@ import math
 
 # 0101  5   =>  0011  3
 # 10011 => 01110
-def next_smallest_number(num: int):
+def next_smaller_number(num: int):
     # find the first non-trailing one
     c0 = c1 = 0
     n = num
@@ -60,14 +60,14 @@ def next_smallest_number(num: int):
     num &= ~((1 << p) - 1)
 
     # set "c1 + 1" ones on the right from "p"
-    mask = (1 << p) - 1
-    mask &= ~((1 << c0 - 1) - 1)
+    mask = (1 << (c1 + 1)) - 1
+    mask <<= c0 - 1
     num |= mask
 
     return num
 
 
-def next_biggest_number(num: int):
+def next_bigger_number(num: int):
     if num == 0:
         return None
 
@@ -125,15 +125,15 @@ def get_ones_cnt(num: int):
 
 if __name__ == '__main__':
     def main():
-        assert next_biggest_number(6) == 9
-        assert next_biggest_number(11) == 13
+        assert next_bigger_number(6) == 9
+        assert next_bigger_number(11) == 13
 
-        assert next_smallest_number(7) is None
-        assert next_smallest_number(6) == 5
-        assert next_smallest_number(19) == 14  # 10011 => 01011/01110
-        assert next_smallest_number(10115) == 10096  # 10011110000011 => 10011101110000
-        assert next_smallest_number(11) == 7
-        assert next_smallest_number(21) == 19
+        assert next_smaller_number(7) is None
+        assert next_smaller_number(6) == 5
+        assert next_smaller_number(19) == 14  # 10011 => 01110
+        assert next_smaller_number(10115) == 10096  # 10011110000011 => 10011101110000
+        assert next_smaller_number(11) == 7
+        assert next_smaller_number(21) == 19
         print('All tests are passed')
 
 
