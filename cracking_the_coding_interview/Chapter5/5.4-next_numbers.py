@@ -1,44 +1,68 @@
 import math
 
 
-# 0000  0
-# 0001  1
-# 0010  2
-# 0011  3
-# 0100  4
-# 0101  5
-# 0110  6
-# 0111  7
-# 1000  8
-# 1001  9
-# 1010  10
-# 1011  11
-# 1100  12
-# 1101  13
-# 1110  14
-# 1111  15
+# 00000  0
+# 00001  1
+# 00010  2
+# 00011  3
+# 00100  4
+# 00101  5
+# 00110  6
+# 00111  7
+# 01000  8
+# 01001  9
+# 01010  10
+# 01011  11
+# 01100  12
+# 01101  13
+# 01110  14
+# 01111  15
+# 10000  16
+# 10001  17
+# 10010  18
+# 10011  19
+# 10100  20
+# 10101  21
+# 10110  22
+# 10111  23
+# 11000  24
+# 11001  25
+# 11010  26
+# 11011  27
+# 11100  28
+# 11101  29
+# 11110  30
+# 11111  31
 
 # 0101  5   =>  0011  3
+# 10011 => 01110
 def next_smallest_number(num: int):
     # find the first non-trailing one
-    p = 0
+    c0 = c1 = 0
     n = num
     while n > 0 and (n & 1) == 1:
-        p += 1
+        c1 += 1
         n >>= 1
 
     if n == 0:  # only ones in the input number
         return None
 
     while n > 0 and (n & 1) == 0:
-        p += 1
+        c0 += 1
         n >>= 1
+
+    p = c0 + c1
 
     # set zero bit at "p" position
     num &= ~(1 << p)
 
-    # set one bit at "p-1" position
-    num |= 1 << (p - 1)
+    # reset bits on the right from "p"
+    num &= ~((1 << p) - 1)
+
+    # set "c1 + 1" ones on the right from "p"
+    mask = (1 << p) - 1
+    mask &= ~((1 << c0 - 1) - 1)
+    num |= mask
 
     return num
 
@@ -101,13 +125,15 @@ def get_ones_cnt(num: int):
 
 if __name__ == '__main__':
     def main():
-        assert next_smallest_number(6) == 5
         assert next_biggest_number(6) == 9
-
-        assert next_smallest_number(11) == 7
         assert next_biggest_number(11) == 13
 
         assert next_smallest_number(7) is None
+        assert next_smallest_number(6) == 5
+        assert next_smallest_number(19) == 14  # 10011 => 01011/01110
+        assert next_smallest_number(10115) == 10096  # 10011110000011 => 10011101110000
+        assert next_smallest_number(11) == 7
+        assert next_smallest_number(21) == 19
         print('All tests are passed')
 
 
