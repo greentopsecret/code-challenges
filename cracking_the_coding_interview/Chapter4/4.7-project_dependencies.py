@@ -6,18 +6,18 @@ from operator import itemgetter
 
 class Node:
     def __init__(self, value: str):
-        self.in_nodes = []
-        self.out_nodes = []
+        self.dependencies = []
+        self.children = []
         self.value = value
 
     def add_in_node(self, node):
-        self.in_nodes.append(node)
+        self.dependencies.append(node)
 
     def add_out_node(self, node):
-        self.out_nodes.append(node)
+        self.children.append(node)
 
     def get_in_cnt(self):
-        return len(self.in_nodes)
+        return len(self.dependencies)
 
 
 class Graph:
@@ -41,12 +41,10 @@ class Graph:
     #         if
 
 
-def organise_projects(projects, deps):
-    # return Graph(dependencies).get_ordered()
+def organise_projects(projects, dependencies):
     in_cnt = defaultdict(int)
-    # out_cnt = defaultdict(int)
     out_dependencies = defaultdict(list)
-    for item in deps:
+    for item in dependencies:
         out_project, in_project = item
         in_cnt[in_project] += 1
         out_dependencies[out_project].append(in_project)
@@ -58,8 +56,6 @@ def organise_projects(projects, deps):
 
     result = []
     while len(queue) > 0:
-        # cnt = len(queue)
-        # for _ in range(cnt):
         project = queue.popleft()
         result.append(project)
         for p in out_dependencies[project]:
@@ -67,7 +63,7 @@ def organise_projects(projects, deps):
             if in_cnt[p] == 0:
                 queue.append(p)
 
-    return result if len(result) == len(projects) else -1
+    return result if len(result) == len(projects) else False
 
 
 if __name__ == '__main__':
@@ -81,17 +77,17 @@ if __name__ == '__main__':
         ]
         assert organise_projects(['a', 'b', 'c', 'd', 'e', 'f'], deps) == ['e', 'f', 'b', 'a', 'd', 'c']
 
-        # # graph with a loop
-        # deps = [
-        #     ('a', 'd'),
-        #     ('f', 'b'),
-        #     ('b', 'd'),
-        #     ('f', 'a'),
-        #     ('d', 'c'),
-        #     ('c', 'g'),
-        #     ('g', 'b')
-        # ]
-        # assert organise_projects(['a', 'b', 'c', 'd', 'e', 'f', 'g'], deps) is False
+        # graph with a loop
+        deps = [
+            ('a', 'd'),
+            ('f', 'b'),
+            ('b', 'd'),
+            ('f', 'a'),
+            ('d', 'c'),
+            ('c', 'g'),
+            ('g', 'b')
+        ]
+        assert organise_projects(['a', 'b', 'c', 'd', 'e', 'f', 'g'], deps) is False
 
         print('All tests are passed')
 

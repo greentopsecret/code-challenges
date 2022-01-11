@@ -26,14 +26,14 @@ class LinkedListNode:
         return self.value
 
 
-def build_bst(arr):
+def build_binary_tree(arr):
     if len(arr) == 0:
         return None
 
     mid = math.ceil(len(arr) / 2) - 1
     root = TreeNode(arr[mid])
-    root.left = build_bst(arr[0:mid])
-    root.right = build_bst(arr[mid + 1:])
+    root.left = build_binary_tree(arr[0:mid])
+    root.right = build_binary_tree(arr[mid + 1:])
 
     return root
 
@@ -59,7 +59,7 @@ def _is_balanced(node: TreeNode) -> int:
 
 if __name__ == '__main__':
     def main():
-        root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+        root = build_binary_tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert is_balanced(root)
 
         root.left.left.right.left = TreeNode(14)

@@ -8,25 +8,25 @@ class Node:
         self.right = None
 
 
-def build_bst(arr):
-    return _build_bst(arr, 0, len(arr))
+def build_binary_tree(arr):
+    return _build_binary_tree(arr, 0, len(arr))
 
 
-def _build_bst(arr, start, end):
+def _build_binary_tree(arr, start, end):
     if start >= end:
         return None
 
     mid = math.floor((end + start) / 2)
     root = Node(arr[mid])
-    root.left = _build_bst(arr, start, mid)
-    root.right = _build_bst(arr, mid + 1, end)
+    root.left = _build_binary_tree(arr, start, mid)
+    root.right = _build_binary_tree(arr, mid + 1, end)
 
     return root
 
 
 if __name__ == '__main__':
     def main():
-        root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+        root = build_binary_tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert root.value == 7
         assert root.left.value == 4
         assert root.left.left.value == 2

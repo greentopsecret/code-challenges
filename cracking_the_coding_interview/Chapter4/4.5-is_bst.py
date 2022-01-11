@@ -11,14 +11,14 @@ class TreeNode:
         return str(self.value)
 
 
-def build_bst(arr):
+def build_binary_tree(arr):
     if len(arr) == 0:
         return None
 
     mid = math.ceil(len(arr) / 2) - 1
     root = TreeNode(arr[mid])
-    root.left = build_bst(arr[0:mid])
-    root.right = build_bst(arr[mid + 1:])
+    root.left = build_binary_tree(arr[0:mid])
+    root.right = build_binary_tree(arr[mid + 1:])
 
     return root
 
@@ -82,32 +82,32 @@ def _is_bst_c(node: TreeNode, prev: TreeNode = None):
 
 if __name__ == '__main__':
     def main():
-        root = build_bst([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+        root = build_binary_tree([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert is_bst_a(root)
         assert is_bst_b(root)
         assert is_bst_c(root)
 
-        root = build_bst([2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+        root = build_binary_tree([2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
         assert not is_bst_a(root)
         assert not is_bst_b(root)
         assert not is_bst_c(root)
 
-        root = build_bst([1, 2, 3, 4, 5, 6, 7])
+        root = build_binary_tree([1, 2, 3, 4, 5, 6, 7])
         assert is_bst_a(root)
         assert is_bst_b(root)
         assert is_bst_c(root)
 
-        root = build_bst([1, 2, 3, 4, 6, 6, 7])
+        root = build_binary_tree([1, 2, 3, 4, 6, 6, 7])
         assert is_bst_a(root)
         assert is_bst_b(root)
         assert is_bst_c(root)
 
-        root = build_bst([1, 2, 3, 4, 5, 6, 6])
+        root = build_binary_tree([1, 2, 3, 4, 5, 6, 6])
         assert not is_bst_a(root)
         assert not is_bst_b(root)
         assert not is_bst_c(root)
 
-        root = build_bst([1, 2, 5, 4, 5, 6, 7])
+        root = build_binary_tree([1, 2, 5, 4, 5, 6, 7])
         assert not is_bst_a(root)
         assert not is_bst_b(root)
         assert not is_bst_c(root)
