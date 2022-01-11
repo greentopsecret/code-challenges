@@ -1,23 +1,25 @@
 import math
 
 
+# 110111001111
 def flip_to_win(num: int) -> int:
-    sequences = []
     sequence = 0
+    prev_sequence = 0
+    max_len = 0
     while num > 0:
         bit = num % 2
         num = math.floor(num / 2)
         if bit:
             sequence += 1
         else:
-            sequences.append(sequence)
+            max_len = max(max_len, sequence + prev_sequence + 1)
+            prev_sequence = sequence
             sequence = 0
-    sequences.append(sequence)
 
-    max_len = sequences[0]
-    for i, _ in enumerate(sequences):
-        if i > 0:
-            max_len = max(max_len, sequences[i - 1] + sequences[i] + 1)
+    if prev_sequence > 0:
+        max_len = max(max_len, sequence + prev_sequence + 1)
+    else:
+        max_len = sequence
 
     return max_len
 
