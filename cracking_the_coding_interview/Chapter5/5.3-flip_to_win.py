@@ -1,6 +1,7 @@
 import math
 
 
+# 11011101111
 def flip_to_win(num: int):
     if num == -1:
         return math.inf
@@ -11,23 +12,21 @@ def flip_to_win(num: int):
     current_bit = 0
     while num > 0:
         if (num & 1) != current_bit:
-            if prev_sequence == 1:
-                max_len = max(max_len, prev_prev_sequence + sequence + 1)
-            elif prev_sequence > 1:
-                max_len = max(max_len, prev_sequence + 1)
             prev_prev_sequence = prev_sequence
             prev_sequence = sequence
             sequence = 0
             current_bit = num & 1
-        sequence += 1
-        num >>= 1
 
-    if prev_sequence == 1:
-        max_len = max(max_len, prev_prev_sequence + sequence + 1)
-    elif prev_sequence > 1:
-        max_len = max(max_len, max(sequence, prev_sequence) + 1)
-    elif prev_sequence < 1:
-        max_len = max(max_len, sequence)
+        sequence += 1
+
+        if prev_sequence == 1:
+            max_len = max(max_len, prev_prev_sequence + sequence + 1)
+        elif prev_sequence == 0:
+            max_len = max(max_len, sequence)
+        elif prev_sequence > 1:
+            max_len = max(max_len, max(sequence, prev_sequence) + 1)
+
+        num >>= 1
 
     return max_len
 
