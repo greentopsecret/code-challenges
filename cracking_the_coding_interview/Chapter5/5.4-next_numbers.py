@@ -57,7 +57,7 @@ def next_smaller_number(num: int):
     num &= ~(1 << p)
 
     # reset bits on the right from "p"
-    num &= ~((1 << p) - 1)
+    num &= ~0 << p  # ~((1 << p) - 1)
 
     # set "c1 + 1" ones on the right from "p"
     mask = (1 << (c1 + 1)) - 1
