@@ -2,8 +2,8 @@ def solution(arr: list, i: int = None) -> list:
     if i is None:
         i = 0
 
-    if i == len(arr) - 1:
-        return [[], [arr[i]]]
+    if i == len(arr):
+        return [[]]
 
     subsets = solution(arr, i + 1)
     sl = len(subsets)
