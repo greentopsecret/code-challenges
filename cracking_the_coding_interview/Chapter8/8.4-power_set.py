@@ -1,16 +1,18 @@
 def solution(arr: list, i: int = None) -> list:
-    if len(arr) <= 1:
-        return [arr]
+    if i is None:
+        i = 0
 
-    subsets = solution(arr[1:])
+    if i == len(arr) - 1:
+        return [[], [arr[i]]]
+
+    subsets = solution(arr, i + 1)
     sl = len(subsets)
-    i = 0
-    while i < sl:
-        subset = [v for v in subsets[i]]
-        subset.append(arr[0])
+    j = 0
+    while j < sl:
+        subset = [v for v in subsets[j]]
+        subset.append(arr[i])
         subsets.append(subset)
-        i += 1
-    subsets.append([arr[0]])
+        j += 1
 
     return subsets
 
@@ -19,26 +21,24 @@ if __name__ == '__main__':
     def main():
         arr = ['a']
         res = solution(arr)
-        assert len(res) == 1
-        assert res == [['a']]
+        assert len(res) == 2
+        assert res == [[], ['a']]
 
         arr = ['a', 'b']
         res = solution(arr)
-        assert len(res) == 3
-        assert res == [
-            ['b'],
-            ['b', 'a'],
-            ['a'],
-        ]
+        assert len(res) == 4
+        assert res == [[], ['b'], ['a'], ['b', 'a']]
 
         arr = ['a', 'b', 'c']
         res = solution(arr)
-        assert len(res) == 7
-        assert res == [['c'], ['c', 'b'], ['b'], ['c', 'a'], ['c', 'b', 'a'], ['b', 'a'], ['a']]
+        assert len(res) == 8
+        assert res == [[], ['c'], ['b'], ['c', 'b'], ['a'], ['c', 'a'], ['b', 'a'], ['c', 'b', 'a']]
+        #
+        # arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4]
+        # res = solution(arr)
+        # # print(res)
 
-
-    # print(solution([1, 2, 3]))
 
     print('All tests are passed')
 
-main()
+    main()
