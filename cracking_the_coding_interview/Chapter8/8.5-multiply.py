@@ -1,5 +1,25 @@
 def solution(a: int, b: int) -> int:
-    return solution_iterative(a, b)
+    # return solution_iterative(a, b)
+    return solution_recursive(a, b, {})
+
+
+def solution_recursive(a: int, b: int, cache: dict) -> int:
+    if b == 0:
+        return 0
+    if b == 1:
+        return a
+
+    if b not in cache.keys():
+        b1 = 1
+        while (b1 << 1) < b:
+            b1 <<= 1
+
+        b2 = b - b1
+        res = solution_recursive(a, b1, cache) + solution_recursive(a, b2, cache)
+
+        cache[b] = res
+
+    return cache[b]
 
 
 def solution_iterative(a: int, b: int) -> int:
