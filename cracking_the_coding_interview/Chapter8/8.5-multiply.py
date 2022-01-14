@@ -1,7 +1,8 @@
 def solution(a: int, b: int) -> int:
     # return solution_iterative(a if a < b else b, a if a >= b else b)
     # return solution_recursive_1(a if a < b else b, a if a >= b else b, {})
-    return solution_recursive_2(a, b, {})
+    # return solution_recursive_2(a, b, {})
+    return solution_recursive_3(a, b)
 
 
 def solution_recursive_1(a: int, b: int, cache: dict) -> int:
@@ -42,6 +43,26 @@ def solution_recursive_2(a: int, b: int, cache: dict) -> int:
         cache[(a, b)] = res
 
     return cache[(a, b)]
+
+
+def solution_recursive_3(a: int, b: int) -> int:
+    if a > b:
+        a = a + b
+        b = a - b
+        a = a - b
+
+    if a == 0:
+        return 0
+    if a == 1:
+        return b
+
+    a_half = a >> 1
+    result = solution_recursive_3(a_half, b)
+    result <<= 1  # multiply by two
+    if a % 2 == 1:
+        result += b
+
+    return result
 
 
 def solution_iterative(a: int, b: int) -> int:
