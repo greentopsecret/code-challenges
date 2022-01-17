@@ -3,17 +3,17 @@ from random import randrange
 
 def shuffle(arr: list[int], i: int = None):
     if i is None:
-        i = 0
+        i = len(arr)
 
-    if i == len(arr):
+    if i == 0:
         return
 
-    idx = randrange(0, len(arr) - i)
+    idx = randrange(0, i)
     tmp = arr[idx]
-    arr[idx] = arr[i]
-    arr[i] = tmp
+    arr[idx] = arr[i - 1]
+    arr[i - 1] = tmp
 
-    shuffle(arr, i + 1)
+    shuffle(arr, i - 1)
 
 
 if __name__ == '__main__':
