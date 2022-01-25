@@ -8,39 +8,28 @@ import sys
 from collections import deque, defaultdict
 from os.path import dirname, realpath
 
-#
-# Complete the 'bfs' function below.
-#
-# The function is expected to return an INTEGER_ARRAY.
-# The function accepts following parameters:
-#  1. INTEGER n
-#  2. INTEGER m
-#  3. 2D_INTEGER_ARRAY edges
-#  4. INTEGER s
-#
-WEIGHT = 6
 
-
-def solution(n, m, edges, s):
-    graph = {i: [] for i in range(1, n + 1)}
-    visited = defaultdict(bool)
+def bfs(n, m, edges, s):
+    graph = {i: set() for i in range(1, n + 1)}
+    seen = defaultdict(bool)
     for edge in edges:
-        graph[edge[0]].append(edge[1])
-        # graph[edge[1]].append(edge[0])
+        graph[edge[0]].add(edge[1])
+        graph[edge[1]].add(edge[0])
 
     dist = 0
     result = {i: -1 for i in range(1, n + 1) if i != s}
     queue = deque()
     queue.appendleft(s)
+    seen[s] = True
     while len(queue):
         _len = len(queue)
-        dist += WEIGHT
+        dist += 6
         for _ in range(_len):
             node = queue.pop()
             for n in graph[node]:
-                if visited[n]:
+                if seen[n]:
                     continue
-                visited[n] = True
+                seen[n] = True
                 queue.appendleft(n)
                 result[n] = dist
 
@@ -62,7 +51,7 @@ def run_tests(input_file_name: str, output_file_name: str):
 
         expected_output = list(map(int, f_output.readline().strip().split(' ')))
 
-        actual_output = solution(n, m, edges, start)
+        actual_output = bfs(n, m, edges, start)
         if actual_output != expected_output:
             print(':/')
         assert actual_output == expected_output
@@ -70,8 +59,8 @@ def run_tests(input_file_name: str, output_file_name: str):
 
 
 def main():
-    # assert solution(5, 3, [[1, 2], [1, 3], [3, 4]], 1) == [6, 6, 12, -1]
-    # assert solution(5, 3, [[1, 2], [1, 4], [4, 5]], 1) == [6, -1, 6, 12]
+    assert bfs(5, 3, [[1, 2], [1, 3], [3, 4]], 1) == [6, 6, 12, -1]
+    assert bfs(5, 3, [[1, 2], [1, 4], [4, 5]], 1) == [6, -1, 6, 12]
 
     _dir = dirname(realpath(__file__))
 
