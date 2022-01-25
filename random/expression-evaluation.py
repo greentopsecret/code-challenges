@@ -7,18 +7,19 @@ def evaluate(expr):
     p = '(\d{1,}|[\+\-\*\/\(\)])'
     for match in re.finditer(p, expr):
         token = match.group()
-        if token in '+-/*(':
+        if token in '+-/*':
             operators_stack.append(token)
         elif token.isdigit():
             operands_stack.append(token)
+        if token in '(':
+            continue
         elif token in ')':
-            while len(operands_stack) > 1:
-                operator = operators_stack.pop()
-                if operator == '(':
-                    break
-                operand2 = operands_stack.pop()
-                operand1 = operands_stack.pop()
-                operands_stack.append(eval('%s %s %s' % (operand1, operator, operand2)))
+            operator = operators_stack.pop()
+            if operator == '(':
+                break
+            operand2 = operands_stack.pop()
+            operand1 = operands_stack.pop()
+            operands_stack.append(eval('%s %s %s' % (operand1, operator, operand2)))
 
     while len(operands_stack) > 1:
         operand2 = operands_stack.pop()
