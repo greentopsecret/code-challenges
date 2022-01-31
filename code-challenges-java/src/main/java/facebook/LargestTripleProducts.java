@@ -1,12 +1,8 @@
 package facebook;
 
-import java.io.*;
 import java.util.*;
 
-
 public class LargestTripleProducts {
-
-
     int[] findMaxProduct(int[] arr) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>(arr.length);
         int[] result = new int[arr.length];
