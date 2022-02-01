@@ -1,7 +1,5 @@
 package facebook;
 
-import java.util.*;
-
 class ElementSwapping {
 
     int[] findMinArray(int[] arr, int k) {
@@ -11,14 +9,7 @@ class ElementSwapping {
 
         int l = 0;
         while (k > 0) {
-            int minIdx = l;
-            int tmpK = k;
-            for (int i = l + 1; i < arr.length && tmpK > 0; i++) {
-                if (arr[i] < arr[i - 1]) {
-                    minIdx = arr[i] < arr[minIdx] ? i : minIdx;
-                }
-                tmpK--;
-            }
+            int minIdx = findMinIdxAtDistanceK(arr, l, k);
             if (minIdx == l) { // all elements that we can swap are in ascending order
                 l++;
                 continue;
@@ -30,6 +21,18 @@ class ElementSwapping {
         }
 
         return arr;
+    }
+
+    private int findMinIdxAtDistanceK(int[] arr, int i, int k) {
+        int minIdx = i;
+        for (i++; i < arr.length && k > 0; i++) {
+            if (arr[i] < arr[i - 1]) {
+                minIdx = arr[i] < arr[minIdx] ? i : minIdx;
+            }
+            k--;
+        }
+
+        return minIdx;
     }
 
     private void swap(int[] arr, int i, int steps) {
