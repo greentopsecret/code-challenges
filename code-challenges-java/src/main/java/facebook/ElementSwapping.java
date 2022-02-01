@@ -13,7 +13,7 @@ class ElementSwapping {
                 continue;
             }
             int steps = minIdx - l;
-            swap(arr, minIdx, steps);
+            swap(arr, l, minIdx);
             k -= steps;
         }
 
@@ -32,11 +32,12 @@ class ElementSwapping {
         return minIdx;
     }
 
-    private void swap(int[] arr, int i, int steps) {
-        for (; steps > 0 && i > 0; steps--, i--) {
-            int tmp = arr[i];
-            arr[i] = arr[i - 1];
-            arr[i - 1] = tmp;
+    private void swap(int[] arr, int start, int end) {
+        while (start < end) {
+            int tmp = arr[end];
+            arr[end] = arr[end - 1];
+            arr[end - 1] = tmp;
+            end--;
         }
     }
 
