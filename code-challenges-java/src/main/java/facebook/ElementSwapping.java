@@ -11,19 +11,20 @@ class ElementSwapping {
 
         int l = 0;
         while (k > 0) {
-            int smallestAfterPeakIdx = l; // 7 8 9 6 5 9: smallestAfterPeak is 5, smallestAfterPeakIdx is 4
+            int minIdx = l;
             int tmpK = k;
-            for (int i = l + 1; i < arr.length && (tmpK > 0 || smallestAfterPeakIdx == l); i++) {
+            for (int i = l + 1; i < arr.length && tmpK > 0; i++) {
                 if (arr[i] < arr[i - 1]) {
-                    smallestAfterPeakIdx = arr[i] < arr[smallestAfterPeakIdx] ? i : smallestAfterPeakIdx;
+                    minIdx = arr[i] < arr[minIdx] ? i : minIdx;
                 }
                 tmpK--;
             }
-            if (smallestAfterPeakIdx == l) { // all elements that we can swap are in ascending order
-                return arr;
+            if (minIdx == l) { // all elements that we can swap are in ascending order
+                l++;
+                continue;
             }
-            int steps = Math.min(smallestAfterPeakIdx - l, k);
-            swap(arr, smallestAfterPeakIdx, steps);
+            int steps = Math.min(minIdx - l, k);
+            swap(arr, minIdx, steps);
             k -= steps;
             l++;
         }
