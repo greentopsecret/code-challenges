@@ -12,7 +12,7 @@ class ElementSwapping {
             if (minIdx == l) { // all elements that we can swap are in ascending order
                 continue;
             }
-            int steps = Math.min(minIdx - l, k);
+            int steps = minIdx - l;
             swap(arr, minIdx, steps);
             k -= steps;
         }
