@@ -12,9 +12,8 @@ class ElementSwapping {
             if (minIdx == l) { // all elements that we can swap are in ascending order
                 continue;
             }
-            int steps = minIdx - l;
             swap(arr, l, minIdx);
-            k -= steps;
+            k -= minIdx - l;
         }
 
         return arr;
