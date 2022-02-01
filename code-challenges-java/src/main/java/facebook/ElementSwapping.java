@@ -7,13 +7,13 @@ class ElementSwapping {
             return arr;
         }
 
-        for (int l = 0; l < arr.length && k > 0; l++) {
-            int minIdx = findMinIdxAtDistanceK(arr, l, k);
-            if (minIdx == l) { // all elements that we can swap are in ascending order
+        for (int i = 0; i < arr.length && k > 0; i++) {
+            int minIdx = findMinIdxAtDistanceK(arr, i, k);
+            if (minIdx == i) { // all elements that we can swap are in ascending order
                 continue;
             }
-            swap(arr, l, minIdx);
-            k -= minIdx - l;
+            swap(arr, i, minIdx);
+            k -= minIdx - i;
         }
 
         return arr;
