@@ -9,7 +9,7 @@ from collections import deque, defaultdict
 from os.path import dirname, realpath
 
 
-def bfs(n, m, edges, s):
+def bfs(n, m, edges, s: str):
     graph = {i: set() for i in range(1, n + 1)}
     seen = defaultdict(bool)
     for edge in edges:
