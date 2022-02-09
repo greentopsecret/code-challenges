@@ -9,9 +9,9 @@ def solution(arr: list) -> list:
 		for right in range(left, len(arr)):
 			part1_sum += arr[right]
 			part1_cnt = right - left + 1
+			part1_avg = part1_sum / part1_cnt
 			part2_sum -= arr[right]
 			part2_cnt = total_cnt - part1_cnt
-			part1_avg = part1_sum / part1_cnt
 			part2_avg = part2_sum / part2_cnt if part2_cnt > 0 else 0
 			if part1_avg > part2_avg:
 				result.append([left + 1, right + 1])
