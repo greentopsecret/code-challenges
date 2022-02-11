@@ -3,6 +3,27 @@ import math
 
 def get_billion_users_day(growth_rates):
 	target = 1e9
+	left = 0
+	right = math.ceil(math.log(target, min(growth_rates)))
+	while left < right:
+		mid = math.floor((left + right) / 2)
+
+		total = 0
+		for rate in growth_rates:
+			total += rate ** mid
+
+		if total > target:
+			right = mid
+		elif total < target:
+			left = mid + 1
+		else:
+			return mid
+
+	return right if right > 0 else -1
+
+
+def get_billion_users_day2(growth_rates):
+	target = 1e9
 	g = max(growth_rates)
 	l = 0
 	h = math.ceil(math.log(target, g))
@@ -77,7 +98,8 @@ def check(expected, output):
 
 if __name__ == "__main__":
 	check(9, get_billion_users_day([10]))
-	# check(8, get_billion_users_day([10, 10, 10, 10, 10, 10, 10, 10, 10, 10]))
+
+	check(8, get_billion_users_day([10, 10, 10, 10, 10, 10, 10, 10, 10, 10]))
 
 	test_1 = [1.1, 1.2, 1.3]
 	expected_1 = 79
@@ -90,5 +112,9 @@ if __name__ == "__main__":
 	check(expected_2, output_2)
 
 	check(52, get_billion_users_day([1.5]))
+
+	check(-1, get_billion_users_day([0.9]))
+
+	check(-1, get_billion_users_day([0.1, 1.1]))
 
 	check(1, get_billion_users_day([1e9]))
