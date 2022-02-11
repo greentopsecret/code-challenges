@@ -3,6 +3,90 @@ from heapq import heapify, heappush, heappop
 
 
 def balancedSplitExists(arr):
+	# return balanced_split_exists_sort(arr)
+	return balanced_split_exists_quickselect(arr)
+
+
+def can_split(cur_arr, total_lo_sum, target):
+	if not cur_arr:
+		return False
+	pivot = cur_arr[0]
+	local_lo_sum, lo, hi = 0, [], []
+	for x in cur_arr:
+		if x < pivot:
+			local_lo_sum += x
+			lo.append(x)
+		elif x == pivot:
+			local_lo_sum += x
+		else:
+			hi.append(x)
+	if target == local_lo_sum + total_lo_sum:
+		return True
+	elif local_lo_sum + total_lo_sum < target:
+		return can_split(hi, local_lo_sum + total_lo_sum, target)
+	else:
+		return can_split(lo, total_lo_sum, target)
+
+
+def balanced_split_exists_quickselect(arr):
+	if not arr or len(arr) == 1:
+		return False
+	target = sum(arr)
+	if target % 2 != 0:
+		return False
+	target /= 2
+
+	return can_split(arr, 0, target)
+
+
+# return balanced_split_exists_quickselect_rec(arr, 0, len(arr) - 1, 0, sum(arr))
+
+
+def partition(arr, lo, hi):
+	left_subpart_sum = 0
+	pivot = arr[math.floor((lo + hi) / 2)]
+	while lo < hi:
+		while arr[lo] < pivot:
+			left_subpart_sum += arr[lo]
+			lo += 1
+
+		while arr[hi] > pivot:
+			hi -= 1
+
+		if lo < hi:
+			arr[lo], arr[hi] = arr[hi], arr[lo]
+			left_subpart_sum += arr[lo]
+			lo += 1
+			hi -= 1
+
+	return lo, left_subpart_sum
+
+
+def balanced_split_exists_quickselect_rec(arr, lo, hi, left_sum, right_sum):
+	pivot, left_subpart_sum = partition(arr, lo, hi)
+	if left_sum + left_subpart_sum > right_sum - left_subpart_sum:
+		return balanced_split_exists_quickselect_rec(
+			arr,
+			lo,
+			pivot - 1,
+			left_sum + left_subpart_sum,
+			right_sum - left_subpart_sum
+		)
+
+	if left_sum + left_subpart_sum < right_sum - left_subpart_sum:
+		return balanced_split_exists_quickselect_rec(
+			arr,
+			pivot,
+			hi,
+			left_sum + left_subpart_sum,
+			right_sum - left_subpart_sum
+		)
+
+	if left_sum + left_subpart_sum == right_sum - left_subpart_sum:
+		return True
+
+
+def balanced_split_exists_sort(arr):
 	arr = sorted(arr)
 
 	total_sum = sum(arr)
@@ -33,7 +117,7 @@ def balancedSplitExists(arr):
 #    large_part_sum -= num
 #    if small_part_sum == large_part_sum and arr and num < arr[0]:
 #      return True
-#  
+#
 #  return False
 
 
@@ -66,6 +150,11 @@ def check(expected, output):
 
 
 if __name__ == "__main__":
+
+	check(True, balancedSplitExists([1, 5, 7, 1]))
+
+	check(False, balancedSplitExists([8, 7, 6, 7, 6, 4, 12, 1, 3, 4]))
+
 	arr_1 = [2, 1, 2, 5]
 	expected_1 = True
 	output_1 = balancedSplitExists(arr_1)
@@ -77,8 +166,6 @@ if __name__ == "__main__":
 	check(expected_2, output_2)
 
 	check(False, balancedSplitExists([12, 7, 6, 7, 6]))
-
-	check(True, balancedSplitExists([1, 5, 7, 1]))
 
 	check(False, balancedSplitExists([]))
 
